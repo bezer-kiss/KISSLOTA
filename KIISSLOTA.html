@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KISSLOTA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #013220;
+        }
+        .block {
+            width: 300px;
+            height: 300px;
+            background-color: #7CFC00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: grab;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            overflow: hidden;
+            width: 100%;
+            cursor: grab;
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col items-center p-5">
+    <header class="w-full flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+        <div class="text-2xl font-bold">KISSLOTA</div>
+        <nav class="flex gap-4">
+            <button class="bg-gray-700 px-4 py-2 rounded-lg">Меню</button>
+        </nav>
+    </header>
+    
+    <main class="mt-6 w-full max-w-6xl">
+        <div class="container mt-6" id="row1">
+            <button class="block">Блок 1</button>
+            <button class="block">Блок 2</button>
+            <button class="block">Блок 3</button>
+            <button class="block">Блок 4</button>
+            <button class="block">Блок 5</button>
+        </div>
+        
+        <div class="container mt-6" id="row2">
+            <button class="block">Блок 6</button>
+            <button class="block">Блок 7</button>
+            <button class="block">Блок 8</button>
+            <button class="block">Блок 9</button>
+            <button class="block">Блок 10</button>
+        </div>
+    </main>
+    
+    <script>
+        function makeDraggable(rowId) {
+            const row = document.getElementById(rowId);
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            row.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - row.offsetLeft;
+                scrollLeft = row.scrollLeft;
+                row.style.cursor = 'grabbing';
+            });
+            
+            row.addEventListener('mouseleave', () => {
+                isDown = false;
+                row.style.cursor = 'grab';
+            });
+            
+            row.addEventListener('mouseup', () => {
+                isDown = false;
+                row.style.cursor = 'grab';
+            });
+            
+            row.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - row.offsetLeft;
+                const walk = (x - startX) * 2; 
+                row.scrollLeft = scrollLeft - walk;
+            });
+        }
+        
+        makeDraggable('row1');
+        makeDraggable('row2');
+    </script>
+</body>
+</html>
